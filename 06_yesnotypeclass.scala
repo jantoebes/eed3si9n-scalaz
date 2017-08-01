@@ -1,9 +1,8 @@
-trait CanTruthy[A] { self =>
+trait CanTruthy[A] {
   def truthys(a: A): Boolean
 }
 
 object CanTruthy {
-  def apply[A](implicit ev: CanTruthy[A]): CanTruthy[A] = ev
   def truthys[A](f: A => Boolean): CanTruthy[A] = new CanTruthy[A] {
     def truthys(a: A): Boolean = f(a)
   }
@@ -11,7 +10,7 @@ object CanTruthy {
 
 trait CanTruthyOps[A] {
   def self: A
-  implicit def F: CanTruthy[A]
+  def F: CanTruthy[A]
   final def truthy: Boolean = F.truthys(self)
 }
 
@@ -19,7 +18,7 @@ object ToCanIsTruthyOps {
   implicit def toCanIsTruthyOps[A](v: A)(implicit ev: CanTruthy[A]) =
     new CanTruthyOps[A] {
       def self = v
-      implicit def F: CanTruthy[A] = ev
+      def F: CanTruthy[A] = ev
     }
 }
 
@@ -43,9 +42,9 @@ List("foo").truthy println
 
 false.truthy println
 
-// If statement
-def truthyIf[A: CanTruthy, B, C](cond: A)(ifyes: => B)(ifno: => C) =
+// Conditional truthy statement
+def truthyIf[A: CanTruthy, B](cond: A)(ifyes: => B)(ifno: => B) =
   if (cond.truthy) ifyes
   else ifno
 
-println (truthyIf (2 :: Nil) {"YEAH!"} {1})
+truthyIf (2 :: Nil) {"YEAH!"} {"NO!"} println
