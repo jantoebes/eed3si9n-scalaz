@@ -1,11 +1,11 @@
-// Parametric polymorphism
+// Parametric polymorphism: Parameter is the poly
 def head[A](xs: List[A]): A= xs(0)
 
 case class Car(make: String)
 
 println(head(Car("Civic") :: Car("CR-V") :: Nil))
 
-// Subtype polymorphism
+// Subtype polymorphism: Poly is passed to the subtypes
 trait Plus[A] {
   def plus(a2: A): A
 }
@@ -18,7 +18,7 @@ case class Dummy(value: Int) extends Plus[Dummy] {
 
 println(Dummy(4).plus(Dummy(6)))
 
-// Adhoc polymorphism
+// Adhoc polymorphism: Adding is separated from the case class
 trait Plus2[A] {
   def plus(a1: A, a2: A): A
 }

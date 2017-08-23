@@ -3,10 +3,6 @@ trait Monoid[A] {
   def mzero: A
 }
 
-trait FoldLeft[F[_]] {
-  def foldLeft[A, B](xs: F[A], b: B, f: (B, A) => B): B
-}
-
 object Monoid {
   implicit val IntMonoid: Monoid[Int] = new Monoid[Int] {
     def mappend(a: Int, b: Int): Int = a + b
@@ -17,6 +13,10 @@ object Monoid {
     def mappend(a: String, b: String): String = a + b
     def mzero: String = ""
   }
+}
+
+trait FoldLeft[F[_]] {
+  def foldLeft[A, B](xs: F[A], b: B, f: (B, A) => B): B
 }
 
 object FoldLeft {
